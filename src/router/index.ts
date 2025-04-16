@@ -1,4 +1,4 @@
-import { defineRouter } from '#q-app/wrappers';
+import { route } from 'quasar/wrappers';
 import {
   createMemoryHistory,
   createRouter,
@@ -6,6 +6,7 @@ import {
   createWebHistory,
 } from 'vue-router';
 import routes from './routes';
+import { useAuthStore } from 'stores/authStore';
 
 /*
  * If not building with SSR mode, you can
@@ -16,7 +17,7 @@ import routes from './routes';
  * with the Router instance.
  */
 
-export default defineRouter(function (/* { store, ssrContext } */) {
+export default route(function (/* { store, ssrContext } */) {
   const createHistory = process.env.SERVER
     ? createMemoryHistory
     : (process.env.VUE_ROUTER_MODE === 'history' ? createWebHistory : createWebHashHistory);
@@ -29,6 +30,33 @@ export default defineRouter(function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
     history: createHistory(process.env.VUE_ROUTER_BASE),
+  });
+
+  // Navigation guard pour l'authentification
+  Router.beforeEach((to, from, next) => {
+    const authStore = useAuthStore();
+    const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+
+    // Si la route nécessite une authentification
+    if (requiresAuth) {
+      // Vérifier si l'utilisateur est connecté
+      if (!authStore.isAuthenticated) {
+        // Rediriger vers la page de connexion
+        next({
+          path: '/login',
+          query: { redirect: to.fullPath }
+        });
+      } else {
+        next();
+      }
+    } else {
+      // Si l'utilisateur est déjà connecté et essaie d'accéder à la page de connexion
+      if (to.path === '/login' && authStore.isAuthenticated) {
+        next('/');
+      } else {
+        next();
+      }
+    }
   });
 
   return Router;

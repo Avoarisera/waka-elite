@@ -149,7 +149,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { locationService } from '../services/locationService'
 import type { Location } from '../types/models'

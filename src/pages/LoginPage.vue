@@ -1,5 +1,39 @@
 <template>
   <q-page class="flex flex-center login-page">
+    <div class="inspiring-text">
+      <span class="text-part">Innovez</span>
+      <span class="text-part">Créez</span>
+      <span class="text-part">Inspirez</span>
+      <span class="text-part">Ensemble ✨</span>
+    </div>
+    <!-- Animated Welcome Text -->
+    <div class="welcome-text-container">
+      <transition name="fade" mode="out-in">
+        <div 
+          v-if="showWelcomeText" 
+          class="typing-text" 
+          :key="currentMessageIndex"
+        >
+          {{ currentWelcomeMessage }}
+        </div>
+      </transition>
+    </div>
+
+    <!-- Modern geometric animations -->
+    <div class="geometric-pattern">
+      <div class="circle-pulse"></div>
+      <div class="dancing-circles">
+        <div class="dance-circle"></div>
+        <div class="dance-circle"></div>
+        <div class="dance-circle"></div>
+      </div>
+      <div class="rhythm-lines">
+        <div class="rhythm-line"></div>
+        <div class="rhythm-line"></div>
+        <div class="rhythm-line"></div>
+      </div>
+    </div>
+
     <!-- Feux d'artifice -->
     <div v-if="showFireworks" class="fireworks-container">
       <div v-for="n in 5" :key="n" class="firework" :style="{ left: `${n * 20}%` }">
@@ -9,10 +43,10 @@
       </div>
     </div>
 
-    <!-- Popup de citation motivante -->
+    <!-- Motivational quote with updated style -->
     <div v-if="showMotivationalQuote" class="motivational-quote animate__animated animate__fadeIn">
       <div class="quote-content">
-        <q-icon name="lightbulb" size="2rem" color="yellow" class="quote-icon" />
+        <q-icon name="auto_awesome" size="2rem" color="yellow-6" class="quote-icon" />
         <div class="quote-text">{{ currentQuote }}</div>
       </div>
     </div>
@@ -28,7 +62,7 @@
       </svg>
     </div>
 
-    <!-- Carte de connexion avec animation -->
+    <!-- Login card with updated style -->
     <q-card class="login-card q-pa-md" :class="{ 'card-visible': showCard }">
       <q-card-section>
         <div class="text-h4 text-center q-mb-md login-title">
@@ -79,6 +113,25 @@
           />
         </q-card-actions>
       </q-form>
+
+      <q-card-section class="text-center q-mt-sm">
+        <div class="row justify-center q-gutter-md">
+          <q-btn
+            flat
+            color="primary"
+            label="Mot de passe oublié ?"
+            class="animate__animated animate__fadeIn"
+            @click="goToResetPassword"
+          />
+          <q-btn
+            flat
+            color="primary"
+            label="Créer un compte"
+            class="animate__animated animate__fadeIn"
+            @click="goToRegister"
+          />
+        </div>
+      </q-card-section>
     </q-card>
 
     <!-- SVG Bottom avec animation -->
@@ -95,7 +148,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useAuthStore } from 'stores/authStore'
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
@@ -110,6 +163,26 @@ const showMotivationalQuote = ref(true)
 const showFireworks = ref(false)
 const authStore = useAuthStore()
 
+// Welcome message system
+const welcomeMessages: string[] = [
+  "Bienvenue dans votre espace créatif",
+  "Ensemble, créons l'avenir",
+  "L'innovation commence ici"
+]
+
+const currentMessageIndex = ref(0)
+const currentWelcomeMessage = computed(() => welcomeMessages[currentMessageIndex.value])
+const showWelcomeText = ref(true)
+
+const rotateWelcomeMessage = () => {
+  showWelcomeText.value = false
+  setTimeout(() => {
+    currentMessageIndex.value = (currentMessageIndex.value + 1) % welcomeMessages.length
+    showWelcomeText.value = true
+  }, 500)
+}
+
+// Existing motivational quotes
 const motivationalQuotes = [
   "L'innovation est la clé du succès ! 💡",
   "Chaque idée peut changer le monde 🌍",
@@ -125,6 +198,10 @@ onMounted(() => {
     showCard.value = true
   }, 500)
 
+  // Welcome message rotation
+  const welcomeInterval = setInterval(rotateWelcomeMessage, 6000)
+
+  // Existing quote rotation
   let quoteIndex = 0
   const rotateQuotes = () => {
     if (showMotivationalQuote.value) {
@@ -142,6 +219,7 @@ onMounted(() => {
 
   return () => {
     clearInterval(quoteInterval)
+    clearInterval(welcomeInterval)
   }
 })
 
@@ -175,80 +253,125 @@ const handleLogin = async (email: string, password: string) => {
 const onSubmit = () => {
   void handleLogin(email.value, password.value)
 }
+
+const goToResetPassword = () => {
+  void router.push('/reset-password')
+}
+
+const goToRegister = () => {
+  void router.push('/register')
+}
 </script>
 
 <style scoped>
 .login-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  background: linear-gradient(135deg, #111111 0%, #1a1a1a 100%);
   position: relative;
   overflow: hidden;
 }
 
-.svg-container {
+/* Modern geometric animations */
+.geometric-pattern {
   position: absolute;
   width: 100%;
   height: 100%;
-  overflow: hidden;
-  z-index: 1;
+  pointer-events: none;
 }
 
-.wave {
+.circle-pulse {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0.8;
-  animation: wave 15s ease-in-out infinite;
-}
-
-.wave-top {
-  top: 0;
-  transform: translateY(-50%);
-  animation-delay: -2s;
-}
-
-.wave-bottom {
-  bottom: 0;
-  transform: translateY(50%);
-  animation-delay: -5s;
-}
-
-.motivational-quote {
-  position: fixed;
-  top: 20px;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  padding: 1rem 2rem;
-  border-radius: 50px;
-  z-index: 3;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, 
+    rgba(0, 203, 169, 0.1) 0%,
+    rgba(255, 215, 0, 0.05) 50%,
+    transparent 70%
+  );
+  animation: pulsate 4s ease-in-out infinite;
 }
 
-.quote-content {
+.dancing-circles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.dance-circle {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 203, 169, 0.2);
+  animation: danceMove 12s infinite ease-in-out;
+}
+
+.dance-circle:nth-child(1) {
+  width: 100px;
+  height: 100px;
+  top: 20%;
+  left: 15%;
+  border-color: rgba(0, 203, 169, 0.2);
+  animation-delay: 0s;
+}
+
+.dance-circle:nth-child(2) {
+  width: 150px;
+  height: 150px;
+  top: 60%;
+  right: 20%;
+  border-color: rgba(255, 215, 0, 0.2);
+  animation-delay: -4s;
+}
+
+.dance-circle:nth-child(3) {
+  width: 80px;
+  height: 80px;
+  bottom: 15%;
+  left: 30%;
+  border-color: rgba(0, 203, 169, 0.2);
+  animation-delay: -8s;
+}
+
+.rhythm-lines {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 200px;
   display: flex;
-  align-items: center;
-  gap: 1rem;
+  justify-content: center;
+  gap: 20px;
+  opacity: 0.3;
 }
 
-.quote-icon {
-  animation: pulse 2s infinite;
+.rhythm-line {
+  width: 3px;
+  height: 50px;
+  background: #00cba9;
+  animation: rhythmPulse 1.5s infinite ease-in-out;
 }
 
-.quote-text {
-  color: white;
-  font-weight: 600;
-  font-size: 1.1rem;
+.rhythm-line:nth-child(2) {
+  animation-delay: 0.5s;
+  background: #ffd700;
 }
 
+.rhythm-line:nth-child(3) {
+  animation-delay: 1s;
+  background: #00cba9;
+}
+
+/* Updated login card style */
 .login-card {
   width: 100%;
   max-width: 400px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 203, 169, 0.2);
   transform: translateY(20px);
   opacity: 0;
   transition: all 0.5s ease;
@@ -268,7 +391,7 @@ const onSubmit = () => {
 
 .title-word {
   display: block;
-  background: linear-gradient(45deg, #00cba9, #4facfe);
+  background: linear-gradient(45deg, #00cba9, #ffd700);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   opacity: 0;
@@ -276,74 +399,125 @@ const onSubmit = () => {
   animation: fadeInUp 0.5s ease forwards;
 }
 
-.subtitle {
-  display: block;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 1.2rem;
-  margin-top: 0.5rem;
-}
-
 .input-field {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 12px;
   transition: all 0.3s ease;
+  border: 1px solid rgba(0, 203, 169, 0.2);
 }
 
 .input-field:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
   transform: translateY(-2px);
+  border-color: rgba(0, 203, 169, 0.4);
 }
 
 .login-btn {
-  background: linear-gradient(45deg, #00cba9, #4facfe);
+  background: linear-gradient(45deg, #00cba9, #009881) !important;
   border: none;
   border-radius: 12px;
   padding: 12px;
   font-weight: 600;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-btn::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 215, 0, 0.2),
+    transparent
+  );
+  transform: rotate(45deg);
+  animation: shimmer 3s infinite linear;
 }
 
 .login-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 203, 169, 0.3);
+  box-shadow: 0 5px 15px rgba(0, 203, 169, 0.2);
 }
 
-@keyframes wave {
-  0% { transform: translateX(0) translateY(-50%); }
-  50% { transform: translateX(-25%) translateY(-45%); }
-  100% { transform: translateX(0) translateY(-50%); }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+/* Updated animations */
+@keyframes pulsate {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.5;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0.8;
   }
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
+@keyframes danceMove {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(20px, -20px) rotate(90deg);
+  }
+  50% {
+    transform: translate(0, -40px) rotate(180deg);
+  }
+  75% {
+    transform: translate(-20px, -20px) rotate(270deg);
+  }
 }
 
+@keyframes rhythmPulse {
+  0%, 100% {
+    height: 50px;
+  }
+  50% {
+    height: 100px;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: rotate(45deg) translateX(-100%);
+  }
+  100% {
+    transform: rotate(45deg) translateX(100%);
+  }
+}
+
+/* Updated motivational quote style */
+.motivational-quote {
+  background: rgba(0, 203, 169, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 203, 169, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.quote-text {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive adjustments */
 @media (max-width: 600px) {
-  .login-card {
-    margin: 1rem;
-    max-width: calc(100% - 2rem);
+  .circle-pulse {
+    width: 200px;
+    height: 200px;
   }
-  
-  .motivational-quote {
-    width: 90%;
-    padding: 0.8rem 1.5rem;
+
+  .dance-circle {
+    transform: scale(0.7);
   }
-  
-  .quote-text {
-    font-size: 1rem;
+
+  .rhythm-lines {
+    height: 150px;
   }
 }
 
@@ -436,4 +610,105 @@ const onSubmit = () => {
 .firework:nth-child(5) .explosion:nth-child(1) { --tx: 60px; --ty: -60px; }
 .firework:nth-child(5) .explosion:nth-child(2) { --tx: -60px; --ty: -60px; }
 .firework:nth-child(5) .explosion:nth-child(3) { --tx: 0; --ty: -110px; }
+
+/* Add before existing styles */
+.welcome-text-container {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 3;
+}
+
+.inspiring-text {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #ffd700;
+}
+
+.text-part {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.text-part:nth-child(1) { animation-delay: 3.5s; }
+.text-part:nth-child(2) { animation-delay: 3.8s; }
+.text-part:nth-child(3) { animation-delay: 4.1s; }
+.text-part:nth-child(4) { animation-delay: 4.4s; }
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: #00cba9 }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Update responsive styles */
+@media (max-width: 600px) {
+  .welcome-text-container {
+    width: 90%;
+  }
+
+  .typing-text {
+    font-size: 1.5rem;
+  }
+
+  .inspiring-text {
+    font-size: 1.2rem;
+    flex-wrap: wrap;
+  }
+}
+
+/* Add to existing styles */
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.typing-text {
+  color: #00cba9;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-shadow: 0 2px 10px rgba(0, 203, 169, 0.3);
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 </style>
+

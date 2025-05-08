@@ -35,10 +35,11 @@ const authStore = useAuthStore()
 const isAuthenticated = computed(() => authStore.isAuthenticated)
 
 const menuItems = [
-  { label: 'Idées', icon: 'lightbulb', route: '/create' },
+  { label: 'Accueil', icon: 'home', route: '/' },
   { label: 'Projets', icon: 'work', route: '/project' },
+  { label: 'Lieux', icon: 'place', route: '/locations' },
   { label: 'Elites', icon: 'people', route: '/users' },
-  { label: 'Moi', icon: 'face', route: '/you' },
+  { label: 'Moi', icon: 'face', route: '/me' },
 ]
 
 const navigateTo = async (route: string) => {
@@ -52,26 +53,26 @@ const quotes = [
   "Le seul moyen de faire du bon travail est d'aimer ce que vous faites. - Steve Jobs",
   "La meilleure façon de prédire l'avenir, c'est de le créer. - Peter Drucker",
   "La vie est un rêve, mais le rêve est une vie. - Gérard de Nerval",
-  "Ils ne savaient pas que c’était impossible, alors ils l’ont fait. – Mark Twain",
-  "La vie, c’est comme une bicyclette, il faut avancer pour ne pas perdre l’équilibre. – Albert Einstein",
+  "Ils ne savaient pas que c'était impossible, alors ils l'ont fait. – Mark Twain",
+  "La vie, c'est comme une bicyclette, il faut avancer pour ne pas perdre l'équilibre. – Albert Einstein",
   "Croyez en vos rêves et ils se réaliseront peut-être. Croyez en vous et ils se réaliseront sûrement. – Martin Luther King Jr.",
   "Ne juge pas chaque jour à la récolte que tu fais mais aux graines que tu sèmes. – Robert Louis Stevenson",
   "Le plus grand risque est de ne prendre aucun risque. – Mark Zuckerberg",
-  "Le bonheur n’est pas quelque chose de prêt à l’emploi. Il vient de vos propres actions. – Dalaï Lama",
-  "Ce n’est pas la montagne que nous conquérons, mais nous-mêmes. – Edmund Hillary",
-  "Commencez par faire le nécessaire, puis faites ce qui est possible, et soudain vous ferez l’impossible. – François d’Assise",
-  "Tout ce que l’esprit de l’homme peut concevoir et croire, il peut l’accomplir. – Napoleon Hill",
+  "Le bonheur n'est pas quelque chose de prêt à l'emploi. Il vient de vos propres actions. – Dalaï Lama",
+  "Ce n'est pas la montagne que nous conquérons, mais nous-mêmes. – Edmund Hillary",
+  "Commencez par faire le nécessaire, puis faites ce qui est possible, et soudain vous ferez l'impossible. – François d'Assise",
+  "Tout ce que l'esprit de l'homme peut concevoir et croire, il peut l'accomplir. – Napoleon Hill",
   "Ne rêve pas ta vie, vis tes rêves. – Inconnu",
-  "Le courage n’est pas l’absence de peur, mais la capacité de la vaincre. – Nelson Mandela",
+  "Le courage n'est pas l'absence de peur, mais la capacité de la vaincre. – Nelson Mandela",
   "La persévérance est la clé de toutes les réussites. – Victor Hugo",
   "Tomber sept fois, se relever huit. – Proverbe japonais",
-  "Il n’y a qu’une façon d’échouer, c’est d’abandonner avant d’avoir réussi. – Georges Clémenceau",
+  "Il n'y a qu'une façon d'échouer, c'est d'abandonner avant d'avoir réussi. – Georges Clémenceau",
   "Faites que le rêve dévore votre vie afin que la vie ne dévore pas votre rêve. – Antoine de Saint-Exupéry",
-  "Ce que tu fais aujourd’hui peut améliorer tous tes lendemains. – Ralph Marston",
-  "N’attendez pas. Le moment ne sera jamais juste. – Napoleon Hill",
-  "L’échec est simplement l’opportunité de recommencer, cette fois de façon plus intelligente. – Henry Ford",
-  "L’avenir appartient à ceux qui croient à la beauté de leurs rêves. – Eleanor Roosevelt",
-  "Le seul endroit où le succès vient avant le travail, c’est dans le dictionnaire. – Vidal Sassoon"
+  "Ce que tu fais aujourd'hui peut améliorer tous tes lendemains. – Ralph Marston",
+  "N'attendez pas. Le moment ne sera jamais juste. – Napoleon Hill",
+  "L'échec est simplement l'opportunité de recommencer, cette fois de façon plus intelligente. – Henry Ford",
+  "L'avenir appartient à ceux qui croient à la beauté de leurs rêves. – Eleanor Roosevelt",
+  "Le seul endroit où le succès vient avant le travail, c'est dans le dictionnaire. – Vidal Sassoon"
 ]
 
 const randomQuote = ref(quotes[0])

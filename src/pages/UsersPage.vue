@@ -132,24 +132,23 @@
     <!-- User Details Dialog -->
     <q-dialog v-model="showDetails" class="user-details-dialog" maximized transition-show="slide-up" transition-hide="slide-down">
       <q-card class="details-card">
+        <!-- Close Button -->
+        <q-btn 
+          flat 
+          round 
+          icon="close" 
+          color="red" 
+          v-close-popup 
+          class="close-btn animated-btn"
+          style="background-color: rgba(255, 59, 48, 0.2); position: absolute; top: 1rem; right: 1rem; z-index: 2;"
+        >
+          <q-tooltip>Fermer</q-tooltip>
+        </q-btn>
 
+        <!-- User Content -->
         <section class="hero-section q-pa-md">
           <div class="hero-content">
-          <div class="dialog-header">
-
-          </div>
             <div class="profile-card" :class="{ 'mobile': $q.screen.lt.md }">
-              <q-btn 
-              flat 
-              round 
-              icon="close" 
-              color="red" 
-              v-close-popup 
-              class="close-btn animated-btn"
-              style="background-color: rgba(255, 59, 48, 0.2);"
-            >
-              <q-tooltip>Fermer</q-tooltip>
-            </q-btn>
               <div class="profile-header">
                 <div class="profile-image-container">
                   <div class="avatar-wrapper">
@@ -242,9 +241,11 @@
 import { ref, onMounted, computed } from 'vue'
 import { useUserStore } from '../stores/userStore'
 import { useQuasar } from 'quasar'
+import { useRouter } from 'vue-router'
 import type { User } from '../types/user'
 
 const $q = useQuasar()
+const router = useRouter()
 const userStore = useUserStore()
 const searchQuery = ref('')
 const showDetails = ref(false)
@@ -285,8 +286,23 @@ const clearSearch = () => {
 }
 
 const showUserDetails = (user: User) => {
+  // Option 1: Use dialog (current implementation)
   selectedUser.value = user
   showDetails.value = true
+  
+  // Store the selected user in the store for access on the profile page
+  userStore.setSelectedUser(user);
+  
+  // Navigate to user profile page with only the ID
+  // Fix TypeScript linting error by properly handling the Promise
+  void router.push(`/user/${user.id}`).catch(error => {
+    console.error('Navigation error:', error);
+    $q.notify({
+      color: 'negative',
+      message: 'Erreur de navigation',
+      position: 'top'
+    });
+  });
 }
 
 const filteredUsers = computed(() => {
@@ -572,8 +588,8 @@ onMounted(() => {
 
 .user-details-dialog {
   :deep(.q-card) {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    color: black;
+    background: #1B383A;
+    color: #E1D4BD;
     border-radius: 0;
     position: relative;
     overflow: hidden;
@@ -592,54 +608,6 @@ onMounted(() => {
   }
 }
 
-.dialog-header {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  z-index: 2;
-}
-
-.close-btn {
-  background: rgba(255, 59, 48, 0.2);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 59, 48, 0.3);
-  width: 40px;
-  height: 40px;
-  color: #ff3b30;
-  
-  &:hover {
-    background: rgba(255, 59, 48, 0.3);
-    box-shadow: 0 0 15px rgba(255, 59, 48, 0.3);
-  }
-}
-
-.details-card {
-  max-width: 100%;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  overflow: hidden;
-}
-
-.hero-section {
-  flex: 1;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-  padding: 5rem 1rem 2rem;
-}
-
-.hero-content {
-  width: 100%;
-  max-width: 100%;
-  margin: 0 auto;
-  z-index: 1;
-}
-
 .profile-card {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(20px);
@@ -648,7 +616,6 @@ onMounted(() => {
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
   text-align: center;
   transform: none;
-  // transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid rgba(255, 255, 255, 0.1);
   animation: cardAppear 0.8s ease forwards;
   position: relative;
@@ -691,7 +658,6 @@ onMounted(() => {
     border-radius: 50%;
     background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
     z-index: -1;
-    // animation: pulse 2s ease-in-out infinite;
   }
 }
 
@@ -708,7 +674,7 @@ onMounted(() => {
 .gradient-text {
   font-size: 2rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #fff 0%, #e2e8f0 100%);
+  background: linear-gradient(135deg, #E1D4BD 0%, #E1D4BD 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
@@ -739,7 +705,7 @@ onMounted(() => {
 .profession {
   font-size: 1.25rem;
   font-weight: 600;
-  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  background: linear-gradient(135deg, #E1D4BD 0%, #E1D4BD 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   position: relative;
@@ -761,7 +727,7 @@ onMounted(() => {
 
 .interests-title {
   margin-bottom: 1rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: #E1D4BD;
   font-size: 1.1rem;
   font-weight: 600;
   letter-spacing: 0.5px;
@@ -814,7 +780,7 @@ onMounted(() => {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   font-size: 0.95rem;
   font-weight: 500;
-
+  color: #E1D4BD;
 }
 
 .social-links {
@@ -833,6 +799,7 @@ onMounted(() => {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   width: 40px;
   height: 40px;
+  color: #E1D4BD;
 
   &:hover {
     transform: translateY(-3px);

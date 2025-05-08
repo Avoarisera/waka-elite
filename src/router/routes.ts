@@ -7,12 +7,7 @@ const routes: RouteRecordRaw[] = [
     children: [
       {
         path: '',
-        component: () => import('pages/SplashScreen.vue'),
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'huhu',
-        component: () => import('pages/AddressBookPage.vue'),
+        component: () => import('pages/CrossSuggestionsPage.vue'),
         meta: { requiresAuth: true }
       },
       { 
@@ -21,8 +16,24 @@ const routes: RouteRecordRaw[] = [
         meta: { requiresAuth: true }
       },
       { 
+        path: 'user/:id', 
+        name: 'userProfile',
+        component: () => import('pages/UserProfilePage.vue'),
+        meta: { requiresAuth: true }
+      },
+      { 
         path: 'login', 
         component: () => import('pages/LoginPage.vue'),
+        meta: { requiresAuth: false }
+      },
+      { 
+        path: 'register', 
+        component: () => import('pages/RegisterPage.vue'),
+        meta: { requiresAuth: false }
+      },
+      { 
+        path: 'reset-password', 
+        component: () => import('pages/ResetPasswordPage.vue'),
         meta: { requiresAuth: false }
       },
       { 
@@ -30,24 +41,19 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/UserProfilePage.vue'),
         meta: { requiresAuth: true }
       },
-      { 
-        path: 'you', 
-        component: () => import('pages/ProfilePage.vue'),
-        meta: { requiresAuth: true }
-      },
-      { 
-        path: 'home', 
-        component: () => import('pages/HomePage.vue'),
-        meta: { requiresAuth: true }
-      },
-      { 
-        path: 'create', 
-        component: () => import('pages/IdeaPage.vue'),
+      {
+        path: 'project',
+        component: () => import('pages/ProjectPage.vue'),
         meta: { requiresAuth: true }
       },
       {
-        path: '/project',
-        component: () => import('src/pages/ProjectPage.vue'),
+        path: 'event',
+        component: () => import('pages/EventsPage.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'locations',
+        component: () => import('pages/LocationsPage.vue'),
         meta: { requiresAuth: true }
       }
     ],

@@ -5,8 +5,10 @@ interface Idea {
   id: string;
   title: string;
   description: string;
-  budget: number;
-  votes_count: number;
+  category: string;
+  status: string;
+  votes: number;
+  location_id: string | null;
   created_at: string;
 }
 
@@ -20,15 +22,30 @@ export const useIdeaStore = defineStore("idea", {
       const { data, error } = await supabase
         .from("ideas")
         .select("*")
-        .order("votes_count", { ascending: false });
+        .order("votes", { ascending: false });
       if (error) throw error;
       this.ideas = data;
     },
 
-    async addIdea(title: string, description: string, budget: number) {
+    async addIdea({
+      title,
+      description,
+      category,
+      status = 'Proposée',
+      votes = 0,
+      location_id = null
+    }: {
+      title: string;
+      description: string;
+      category: string;
+      status?: string;
+      votes?: number;
+      location_id?: string | null;
+    }) {
       const { data, error } = await supabase
         .from("ideas")
-        .insert([{ title, description, budget }]);
+        .insert([{ title, description, category, status, votes, location_id }])
+        .select();
       if (error) throw error;
       if (data) {
         this.ideas.push(data[0]);
@@ -63,7 +80,7 @@ export const useIdeaStore = defineStore("idea", {
         // Mettre à jour l'idée dans le store
         const idea = this.ideas.find(i => i.id === ideaId);
         if (idea) {
-          idea.votes_count--;
+          idea.votes--;
         }
       } else {
         // L'utilisateur n'a pas encore voté, on ajoute le vote
@@ -80,7 +97,7 @@ export const useIdeaStore = defineStore("idea", {
         // Mettre à jour l'idée dans le store
         const idea = this.ideas.find(i => i.id === ideaId);
         if (idea) {
-          idea.votes_count++;
+          idea.votes++;
         }
       }
     },

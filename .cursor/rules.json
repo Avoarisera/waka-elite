@@ -1,0 +1,195 @@
+{
+    "rules": [
+      {
+        "name": "Vue Component Structure",
+        "pattern": "src/**/*.vue",
+        "description": "Vue components should follow a consistent structure with template, script, and style sections",
+        "severity": "warning",
+        "message": "Vue components should have template, script, and style sections in order"
+      },
+      {
+        "name": "TypeScript Types",
+        "pattern": "src/**/*.ts",
+        "description": "TypeScript files should have proper type definitions",
+        "severity": "error",
+        "message": "Missing type definitions in TypeScript file"
+      },
+      {
+        "name": "SCSS Nesting",
+        "pattern": "src/**/*.scss",
+        "description": "SCSS should use proper nesting and avoid deep nesting",
+        "severity": "warning",
+        "message": "Avoid nesting deeper than 3 levels in SCSS"
+      },
+      {
+        "name": "Quasar Components",
+        "pattern": "src/**/*.vue",
+        "description": "Use Quasar components with proper props and events",
+        "severity": "warning",
+        "message": "Use Quasar components with proper props and events"
+      },
+      {
+        "name": "Vue Composition API",
+        "pattern": "src/**/*.vue",
+        "description": "Use Vue Composition API with proper setup function",
+        "severity": "warning",
+        "message": "Use Vue Composition API with proper setup function"
+      },
+      {
+        "name": "File Naming",
+        "pattern": "src/**/*",
+        "description": "Files should follow kebab-case naming convention",
+        "severity": "warning",
+        "message": "Use kebab-case for file names"
+      },
+      {
+        "name": "Component Props",
+        "pattern": "src/**/*.vue",
+        "description": "Component props should be properly typed and documented",
+        "severity": "warning",
+        "message": "Component props should be properly typed and documented"
+      },
+      {
+        "name": "Vue Router",
+        "pattern": "src/**/*.vue",
+        "description": "Use Vue Router with proper route definitions",
+        "severity": "warning",
+        "message": "Use Vue Router with proper route definitions"
+      },
+      {
+        "name": "Pinia Store",
+        "pattern": "src/**/*.ts",
+        "description": "Use Pinia stores with proper state management",
+        "severity": "warning",
+        "message": "Use Pinia stores with proper state management"
+      },
+      {
+        "name": "Responsive Design",
+        "pattern": "src/**/*.scss",
+        "description": "Use proper media queries for responsive design",
+        "severity": "warning",
+        "message": "Use proper media queries for responsive design"
+      },
+      {
+        "name": "Always Read PRD",
+        "pattern": "**/*",
+        "description": "Always read and understand the Product Requirements Document before starting development",
+        "severity": "error",
+        "message": "Must read PRD before starting development",
+        "always": true
+      },
+      {
+        "name": "Always Test Changes",
+        "pattern": "**/*",
+        "description": "Always test your changes before committing",
+        "severity": "error",
+        "message": "Must test changes before committing",
+        "always": true
+      },
+      {
+        "name": "Always Review Code",
+        "pattern": "**/*",
+        "description": "Always review your code before committing",
+        "severity": "error",
+        "message": "Must review code before committing",
+        "always": true
+      },
+      {
+        "name": "Always Document Changes",
+        "pattern": "**/*",
+        "description": "Always document significant changes in code",
+        "severity": "error",
+        "message": "Must document significant changes",
+        "always": true
+      },
+      {
+        "name": "Always Check Dependencies",
+        "pattern": "**/*",
+        "description": "Always check for dependency updates and security issues",
+        "severity": "error",
+        "message": "Must check dependencies regularly",
+        "always": true
+      },
+      {
+        "name": "Always Follow Git Flow",
+        "pattern": "**/*",
+        "description": "Always follow the project's Git workflow",
+        "severity": "error",
+        "message": "Must follow Git workflow",
+        "always": true
+      },
+      {
+        "name": "Always Consider Performance",
+        "pattern": "**/*",
+        "description": "Always consider performance implications of changes",
+        "severity": "error",
+        "message": "Must consider performance impact",
+        "always": true
+      },
+      {
+        "name": "Always Consider Accessibility",
+        "pattern": "**/*",
+        "description": "Always consider accessibility in UI changes",
+        "severity": "error",
+        "message": "Must consider accessibility",
+        "always": true
+      },
+      {
+        "name": "Always Consider Security",
+        "pattern": "**/*",
+        "description": "Always consider security implications of changes",
+        "severity": "error",
+        "message": "Must consider security impact",
+        "always": true
+      },
+      {
+        "name": "Always Consider Mobile",
+        "pattern": "**/*",
+        "description": "Always consider mobile responsiveness",
+        "severity": "error",
+        "message": "Must consider mobile responsiveness",
+        "always": true
+      },
+      {
+        "name": "Always Fix ESLint Issues",
+        "pattern": "**/*",
+        "description": "Always fix ESLint issues before committing code",
+        "severity": "error",
+        "message": "Must fix all ESLint issues before committing",
+        "always": true
+      },
+      {
+        "name": "Always Run Linter",
+        "pattern": "**/*",
+        "description": "Always run the linter before submitting pull requests",
+        "severity": "error",
+        "message": "Must run linter before submitting PR",
+        "always": true
+      }
+    ],
+    "settings": {
+      "vue": {
+        "template": {
+          "indent": 2,
+          "selfClosing": "always"
+        },
+        "script": {
+          "indent": 2,
+          "semi": true
+        },
+        "style": {
+          "indent": 2
+        }
+      },
+      "typescript": {
+        "indent": 2,
+        "semi": true,
+        "trailingComma": "es5"
+      },
+      "scss": {
+        "indent": 2,
+        "semi": true,
+        "trailingComma": "es5"
+      }
+    }
+  }

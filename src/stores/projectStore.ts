@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { supabase } from "boot/supabase";
 
-interface Project {
+export interface Project {
   id: string;
   idea_id: string | null;
   user_id: string;
